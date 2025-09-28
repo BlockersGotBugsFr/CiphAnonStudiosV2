@@ -1,363 +1,310 @@
-<!DOCTYPE html>
-<html lang="en"><head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CiphAnon Studios</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #1a1a2e;
-            color: #e0e0e0;
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
-        }
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CiphAnon Studios</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Orbitron', sans-serif;
+      background: linear-gradient(-45deg, #0f0f1d, #1a1a2e, #222244, #0f0f1d);
+      background-size: 400% 400%;
+      animation: gradientMove 15s ease infinite;
+      color: #e0e0e0;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }/* Sidebar */
+.sidebar {
+  width: 70px;
+  background: rgba(44, 44, 84, 0.7);
+  backdrop-filter: blur(12px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.4);
+  position: relative;
+}
+.sidebar-icon {
+  font-size: 22px;
+  color: #8b8be0;
+  margin: 20px 0;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+}
+.sidebar-icon:hover {
+  color: #ffffff;
+  text-shadow: 0 0 8px #8b8be0;
+}
+.sidebar-icon::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 60px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(20, 20, 40, 0.8);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.3s;
+}
+.sidebar-icon:hover::after {
+  opacity: 1;
+}
 
-        .sidebar {
-            width: 70px;
-            background-color: #2c2c54;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-top: 20px;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
-        }
+/* Main Content */
+.main-content {
+  flex-grow: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
 
-        .sidebar-icon {
-            font-size: 24px;
-            color: #8b8be0;
-            margin-bottom: 30px;
-            cursor: pointer;
-        }
+.header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.app-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #ffffff;
+  margin-left: 20px;
+  text-shadow: 0 0 8px #8b8be0;
+}
 
-        .sidebar-icon:hover {
-            color: #ffffff;
-        }
+/* Carousel */
+.game-carousel-container {
+  width: 100%;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding-bottom: 15px;
+  scrollbar-width: none;
+}
+.game-carousel-container::-webkit-scrollbar {
+  display: none;
+}
+.game-card-thumbnail {
+  width: 120px;
+  height: 80px;
+  background: rgba(63,63,114,0.6);
+  backdrop-filter: blur(6px);
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: #ccc;
+  margin-right: 15px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.game-card-thumbnail:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 12px #8b8be0;
+}
 
-        .main-content {
-            flex-grow: 1;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            background: linear-gradient(to bottom right, #1a1a2e, #0f0f1d);
-            position: relative;
-        }
+/* Left Info */
+.main-area-content {
+  flex-grow: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  flex-wrap: wrap;
+}
+.left-info h1 {
+  font-size: 42px;
+  margin-bottom: 10px;
+  color: #a4e667;
+  text-shadow: 0 0 10px #5fdd87;
+}
+.left-info p {
+  font-size: 20px;
+  color: #b0b0b0;
+  margin-bottom: 20px;
+}
+.start-gaming-btn {
+  background: linear-gradient(90deg, #8b8be0, #5fdd87);
+  color: white;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+.start-gaming-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 12px #8b8be0;
+}
 
-        .header-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
+/* Social */
+.social-icons-below-btn {
+  display: flex;
+  gap: 15px;
+  margin-top: 15px;
+}
+.social-icons-below-btn i {
+  font-size: 22px;
+  color: #8b8be0;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+.social-icons-below-btn i:hover {
+  color: #a4e667;
+}
 
-        .app-title {
-            font-size: 28px;
-            font-weight: bold;
-            color: #ffffff;
-            margin-left: 20px;
-        }
+/* Game Card */
+.game-display-card {
+  width: 260px;
+  background: rgba(44,44,84,0.6);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  perspective: 1000px;
+}
+.game-display-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+.game-display-card:hover .game-display-card-inner {
+  transform: rotateY(180deg);
+}
+.game-display-front, .game-display-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+.game-display-front img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.game-display-front h3 {
+  margin: 0;
+  color: #fff;
+  font-size: 20px;
+}
+.game-display-back {
+  background: rgba(44,44,84,0.8);
+  border-radius: 12px;
+  padding: 20px;
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
-        .game-carousel-container {
-            width: 100%;
-            overflow-x: auto;
-            white-space: nowrap;
-            padding-bottom: 15px;
-            -webkit-overflow-scrolling: touch; /* For smooth scrolling on iOS */
-            scrollbar-width: none; /* Firefox */
-            -ms-overflow-style: none;  /* Internet Explorer 10+ */
-        }
-        .game-carousel-container::-webkit-scrollbar {
-            display: none; /* Safari and Chrome */
-        }
+/* Footer HUD */
+.footer-bar {
+  position: absolute;
+  bottom: 0;
+  left: 70px;
+  right: 0;
+  background: rgba(44,44,84,0.7);
+  backdrop-filter: blur(10px);
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: #b0b0b0;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.4);
+}
 
-        .game-carousel {
-            display: inline-flex;
-            gap: 15px;
-            padding: 10px 0;
-        }
-
-        .game-card-thumbnail {
-            width: 120px;
-            height: 80px;
-            background-color: #3f3f72;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            color: #ccc;
-            flex-shrink: 0;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            border: 1px solid #5a5a8a;
-        }
-
-        .main-area-content {
-            flex-grow: 1;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            flex-wrap: wrap;
-        }
-
-        .left-info {
-            text-align: left;
-            margin-right: 40px;
-        }
-
-        .left-info h1 {
-            font-size: 48px;
-            margin-bottom: 10px;
-            color: #a4e667; /* Greenish color for "prosperity" */
-        }
-
-        .left-info p {
-            font-size: 24px;
-            color: #b0b0b0;
-            margin-bottom: 20px;
-        }
-
-        .start-gaming-btn {
-            background-color: #8b8be0;
-            color: white;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 5px;
-            font-size: 18px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .start-gaming-btn:hover {
-            background-color: #a0a0ff;
-        }
-
-        .social-icons-below-btn {
-            display: flex;
-            gap: 15px;
-            margin-top: 15px;
-        }
-
-        .social-icons-below-btn i {
-            font-size: 24px;
-            color: #8b8be0;
-            cursor: pointer;
-        }
-
-        .social-icons-below-btn i:hover {
-            color: #ffffff;
-        }
-
-
-        .game-display-card {
-            width: 250px;
-            background-color: #2c2c54;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
-            text-align: center;
-            position: relative;
-        }
-
-        .game-display-card img {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            border: 1px solid #5a5a8a;
-        }
-
-        .game-display-card h3 {
-            margin-top: 0;
-            color: #ffffff;
-            font-size: 20px;
-        }
-
-        .game-display-card p {
-            font-size: 14px;
-            color: #b0b0b0;
-        }
-
-        /* Footer elements */
-        .footer-bar {
-            position: absolute;
-            bottom: 0;
-            left: 70px; /* Aligned with main content start */
-            right: 0;
-            background-color: #2c2c54;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 12px;
-            color: #b0b0b0;
-            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
-            z-index: 100; /* Ensure it's above other elements if needed */
-        }
-
-        .footer-bar .left-footer-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .footer-bar .right-footer-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .popup-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            display: none; /* Hidden by default */
-        }
-
-        .popup-content {
-            background-color: #2c2c54;
-            padding: 30px;
-            border-radius: 10px;
-            text-align: center;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);
-            width: 350px;
-            position: relative;
-        }
-
-        .popup-close {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 24px;
-            cursor: pointer;
-            color: #e0e0e0;
-        }
-
-        .popup-content h2 {
-            color: #ffffff;
-            margin-bottom: 20px;
-            font-size: 24px;
-        }
-
-        .popup-content p {
-            color: #b0b0b0;
-            margin-bottom: 25px;
-        }
-
-        .popup-social-links {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        .popup-social-links i {
-            font-size: 36px;
-            color: #8b8be0;
-            cursor: pointer;
-        }
-
-        .popup-social-links i:hover {
-            color: #a4e667;
-        }
-    </style>
+  </style>
 </head>
 <body>
-    <div class="sidebar">
-        <i class="fas fa-grip-lines-vertical sidebar-icon"></i>
-        <i class="fas fa-play sidebar-icon"></i>
-        <i class="fas fa-home sidebar-icon"></i>
-        <i class="fas fa-gamepad sidebar-icon"></i>
-        <i class="fas fa-th-large sidebar-icon active-icon"></i> <!-- Apps icon -->
-        <i class="fas fa-bell sidebar-icon"></i>
-        <i class="fas fa-chart-bar sidebar-icon"></i>
-        <div style="flex-grow: 1;"></div> <!-- Spacer -->
-        <i class="fas fa-cog sidebar-icon"></i>
-        <i class="fas fa-info-circle sidebar-icon"></i>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <i class="fas fa-home sidebar-icon" data-tooltip="Home"></i>
+    <i class="fas fa-gamepad sidebar-icon" data-tooltip="Games"></i>
+    <i class="fas fa-th-large sidebar-icon" data-tooltip="Apps"></i>
+    <i class="fas fa-bell sidebar-icon" data-tooltip="Notifications"></i>
+    <i class="fas fa-chart-bar sidebar-icon" data-tooltip="Stats"></i>
+    <div style="flex-grow:1;"></div>
+    <i class="fas fa-cog sidebar-icon" data-tooltip="Settings"></i>
+    <i class="fas fa-info-circle sidebar-icon" data-tooltip="About"></i>
+  </div> <!-- Main Content --> <div class="main-content">
+    <div class="header-bar">
+      <div class="app-title">CiphAnon Studios</div>
+    </div><!-- Carousel -->
+<div class="game-carousel-container">
+  <div class="game-carousel">
+    <div class="game-card-thumbnail">Game 1</div>
+    <div class="game-card-thumbnail">Game 2</div>
+    <div class="game-card-thumbnail">Game 3</div>
+    <div class="game-card-thumbnail">Game 4</div>
+  </div>
+</div>
+
+<div class="main-area-content">
+  <div class="left-info">
+    <h1>Welcome to <span style="color:#a4e667;">prosperity.</span></h1>
+    <p>Game on!</p>
+    <button class="start-gaming-btn">Start Gaming</button>
+    <div class="social-icons-below-btn">
+      <i class="fab fa-twitter-square"></i>
+      <i class="fab fa-discord"></i>
     </div>
+  </div>
 
-    <div class="main-content">
-        <div class="header-bar">
-            <div class="app-title">Apps</div>
-        </div>
-
-        <div class="game-carousel-container">
-            <div class="game-carousel">
-                <div class="game-card-thumbnail">Game 1</div>
-                <div class="game-card-thumbnail">Game 2</div>
-                <div class="game-card-thumbnail">Game 3</div>
-                <div class="game-card-thumbnail">Game 4</div>
-                <div class="game-card-thumbnail">Game 5</div>
-                <div class="game-card-thumbnail">Game 6</div>
-            </div>
-        </div>
-
-        <div class="main-area-content">
-            <div class="left-info">
-                <h1>Welcome to <span style="color: #a4e667;">prosperity.</span></h1>
-                <p>Game on!</p>
-                <button class="start-gaming-btn">Start Gaming</button>
-                <div class="social-icons-below-btn">
-                    <i class="fab fa-twitter-square"></i>
-                    <i class="fab fa-discord"></i>
-                </div>
-            </div>
-
-            <div class="game-display-card">
-                <img src="https://via.placeholder.com/200x150" alt="YoHoHo.io Game Image">
-                <h3>YoHoHo.io</h3>
-                <p>FICATE BATTLE ROYALE</p>
-                <p>YoHoHo!</p>
-            </div>
-        </div>
-
-        <!-- The Modal Popup -->
-        <div class="popup-overlay" id="discordPopup">
-            <div class="popup-content">
-                <span class="popup-close" onclick="closePopup()">×</span>
-                <h2>Want more links and proxy news?</h2>
-                <p>Click below to join our Discord community and follow us on Twitter/X to stay updated!</p>
-                <div class="popup-social-links">
-                    <i class="fab fa-twitter-square"></i>
-                    <i class="fab fa-discord"></i>
-                </div>
-            </div>
-        </div>
-
-        <div class="footer-bar">
-            <div class="left-footer-info">
-                <span>100% FPS: 61</span>
-                <span>12:31 PM</span>
-            </div>
-            <div class="right-footer-info">
-                <button class="start-gaming-btn" style="padding: 5px 10px; font-size: 12px;" onclick="openPopup()">Join Discord</button>
-                <!-- Add an 'X' icon for Twitter/X -->
-                <i class="fab fa-twitter"></i>
-            </div>
-        </div>
+  <div class="game-display-card">
+    <div class="game-display-card-inner">
+      <div class="game-display-front">
+        <img src="https://via.placeholder.com/200x150" alt="Game">
+        <h3>YoHoHo.io</h3>
+      </div>
+      <div class="game-display-back">
+        <p>⚔️ Pirate Battle Royale</p>
+        <p>Fight. Loot. Survive.</p>
+      </div>
     </div>
+  </div>
+</div>
 
-    <script>
-        function openPopup() {
-            document.getElementById('discordPopup').style.display = 'flex';
-        }
+<!-- Footer HUD -->
+<div class="footer-bar">
+  <div class="left-footer-info">
+    <span>FPS: 61</span> | <span id="clock"></span>
+  </div>
+  <div class="right-footer-info">
+    <i class="fas fa-signal"></i>
+    <i class="fas fa-wifi"></i>
+  </div>
+</div>
 
-        function closePopup() {
-            document.getElementById('discordPopup').style.display = 'none';
-        }
-
-        // Example: Automatically open popup after a delay, or based on user interaction
-        // setTimeout(openPopup, 3000); // Uncomment to automatically open after 3 seconds
-    </script>
-
-
-</body></html>
+  </div> <script>
+    function updateClock(){
+      const now = new Date();
+      document.getElementById('clock').textContent = now.toLocaleTimeString();
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+  </script></body>
+</html>
