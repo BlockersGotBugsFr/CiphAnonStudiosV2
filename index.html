@@ -5,58 +5,66 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ToonyVerse - CiphAnon Studios</title>
 <style>
-body {
+/* ===== Reset & Base ===== */
+body, html {
     margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background: #0a0a0f;
     color: #eee;
+    overflow-x: hidden;
 }
+
+/* ===== Header ===== */
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 30px;
-    background: rgba(0,0,0,0.8);
-    backdrop-filter: blur(5px);
+    padding: 15px 40px;
+    background: linear-gradient(90deg, #0f0c29, #302b63, #24243e);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
     position: fixed;
     width: 100%;
     top: 0;
-    z-index: 10;
+    z-index: 100;
 }
 header h1 {
     font-size: 28px;
     color: #a4e667;
+    font-weight: 800;
+    letter-spacing: 1px;
 }
 nav {
     display: flex;
-    gap: 10px;
+    gap: 12px;
 }
 nav button {
     padding: 10px 20px;
     border: none;
-    background: linear-gradient(45deg, #8b8be0, #a4e667);
-    color: #fff;
     border-radius: 8px;
-    cursor: pointer;
+    background: linear-gradient(45deg, #8b8be0, #a4e667);
+    color: white;
     font-weight: bold;
-    transition: 0.3s;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 nav button:hover {
     background: linear-gradient(45deg, #a4e667, #8b8be0);
 }
 
+/* ===== Hero Section ===== */
 .hero {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding: 150px 20px 60px 20px;
-    background: url('https://images.unsplash.com/photo-1602524810849-1b9d59a0c8c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+    padding: 150px 20px 80px 20px;
+    background: radial-gradient(circle, #1a1a2e, #0a0a0f);
 }
 .hero h2 {
     font-size: 48px;
-    color: #fff;
-    text-shadow: 2px 2px 5px #000;
+    color: #a4e667;
+    margin-bottom: 10px;
 }
 .hero p {
     font-size: 20px;
@@ -72,55 +80,98 @@ nav button:hover {
     color: white;
     font-size: 18px;
     cursor: pointer;
+    transition: background 0.3s ease;
+}
+.hero button:hover {
+    background: linear-gradient(45deg, #a4e667, #8b8be0);
 }
 
+/* ===== Sections ===== */
 section {
-    padding: 40px 30px;
+    padding: 60px 30px;
 }
 section h3 {
     font-size: 32px;
-    margin-bottom: 20px;
-    color: #a4e667;
     text-align: center;
+    margin-bottom: 30px;
+    color: #a4e667;
 }
+
+/* ===== Card Grid ===== */
 .card-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 20px;
 }
 .card {
-    background: rgba(255,255,255,0.05);
+    background: linear-gradient(145deg, rgba(255,255,255,0.03), rgba(255,255,255,0.07));
     padding: 15px;
-    border-radius: 12px;
+    border-radius: 15px;
     text-align: center;
-    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
     cursor: pointer;
     transition: transform 0.3s ease, background 0.3s ease;
 }
 .card:hover {
     transform: translateY(-8px);
-    background: rgba(255,255,255,0.1);
+    background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.12));
 }
 .card img {
     width: 100%;
     border-radius: 8px;
+    margin-bottom: 10px;
+}
+.card h4 {
+    margin: 10px 0;
+    color: #fff;
+}
+
+/* ===== Iframe Container ===== */
+#iframe-container {
+    display: none;
+    padding: 20px;
 }
 iframe {
     width: 100%;
     height: 600px;
     border: none;
     background: #000;
+    border-radius: 10px;
 }
-#iframe-container {
-    display: none;
-    padding: 20px;
-}
+
+/* ===== Footer ===== */
 footer {
     text-align: center;
     padding: 15px;
-    background: rgba(0,0,0,0.7);
-    border-top: 1px solid #444;
+    background: linear-gradient(90deg, #0f0c29, #302b63, #24243e);
     color: #aaa;
+}
+
+/* ===== Code Playground ===== */
+.code-editor {
+    background: rgba(0,0,0,0.8);
+    padding: 20px;
+    border-radius: 10px;
+}
+textarea {
+    width: 100%;
+    height: 200px;
+    background: #1a1a2e;
+    color: #eee;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    font-family: monospace;
+}
+.run-btn {
+    padding: 10px 20px;
+    background: #a4e667;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.run-btn:hover {
+    background: #8b8be0;
 }
 </style>
 </head>
@@ -139,7 +190,7 @@ footer {
 
 <section id="home" class="hero">
     <h2>Welcome to ToonyVerse</h2>
-    <p>The ultimate gaming & coding universe for students. Play games, bypass blocks, and learn code!</p>
+    <p>Your ultimate school gaming hub. Play games, bypass blocks, and learn code in one place!</p>
     <button onclick="showSection('games')">Start Playing</button>
 </section>
 
@@ -147,15 +198,15 @@ footer {
     <h3>Games</h3>
     <div class="card-container">
         <div class="card" onclick="openBlank('https://www.y8.com')">
-            <img src="https://via.placeholder.com/200x120?text=Y8" alt="Y8">
+            <img src="https://via.placeholder.com/220x120?text=Y8+Games">
             <h4>Y8 Games</h4>
         </div>
         <div class="card" onclick="openBlank('https://www.crazygames.com')">
-            <img src="https://via.placeholder.com/200x120?text=CrazyGames" alt="CrazyGames">
+            <img src="https://via.placeholder.com/220x120?text=CrazyGames">
             <h4>CrazyGames</h4>
         </div>
         <div class="card" onclick="openBlank('https://www.miniclip.com')">
-            <img src="https://via.placeholder.com/200x120?text=Miniclip" alt="Miniclip">
+            <img src="https://via.placeholder.com/220x120?text=Miniclip">
             <h4>Miniclip</h4>
         </div>
     </div>
@@ -165,15 +216,15 @@ footer {
     <h3>Unblockers</h3>
     <div class="card-container">
         <div class="card" onclick="openBlank('https://www.proxysite.com')">
-            <img src="https://via.placeholder.com/200x120?text=ProxySite" alt="Proxy">
+            <img src="https://via.placeholder.com/220x120?text=ProxySite">
             <h4>ProxySite</h4>
         </div>
         <div class="card" onclick="openBlank('https://www.hidemyass.com')">
-            <img src="https://via.placeholder.com/200x120?text=HMA" alt="HMA">
+            <img src="https://via.placeholder.com/220x120?text=HMA">
             <h4>HideMyAss</h4>
         </div>
         <div class="card" onclick="openBlank('https://www.kproxy.com')">
-            <img src="https://via.placeholder.com/200x120?text=KProxy" alt="KProxy">
+            <img src="https://via.placeholder.com/220x120?text=KProxy">
             <h4>KProxy</h4>
         </div>
     </div>
@@ -181,21 +232,18 @@ footer {
 
 <section id="code" style="display:none;">
     <h3>Code Playground</h3>
-    <div class="card-container">
-        <div class="card">
-            <textarea id="codeInput" placeholder="Type HTML/CSS/JS here..." style="width:100%;height:200px;background:#1a1a2e;color:#eee;"></textarea>
-            <button onclick="runCode()" style="margin-top:10px;padding:10px;background:#a4e667;border:none;border-radius:5px;">Run Code</button>
-            <iframe id="codeOutput"></iframe>
-        </div>
+    <div class="code-editor">
+        <textarea id="codeInput" placeholder="Type HTML/CSS/JS here..."></textarea>
+        <button class="run-btn" onclick="runCode()">Run Code</button>
     </div>
+    <iframe id="codeOutput"></iframe>
 </section>
 
 <section id="learn" style="display:none;">
     <h3>Learn to Code</h3>
-    <p style="text-align:center;">Beginner tutorials to learn HTML, CSS, and JavaScript while having fun!</p>
     <div class="card-container">
         <div class="card" onclick="openBlank('https://www.w3schools.com')">
-            <img src="https://via.placeholder.com/200x120?text=W3Schools" alt="W3Schools">
+            <img src="https://via.placeholder.com/220x120?text=W3Schools">
             <h4>W3Schools</h4>
         </div>
     </div>
