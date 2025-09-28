@@ -1,763 +1,230 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>CiphAnon Arcade — Full Build</title>
-
-<!-- Fonts & Icons -->
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CiphAnon Gaming Hub</title>
 <style>
-  :root{
-    --bg:#071022; --panel:#0c1020; --muted:#97a0b6;
-    --accent1:#7b78ff; --accent2:#33e29a;
-    --card-shadow: 0 10px 30px rgba(2,6,20,0.6);
-  }
-  *{box-sizing:border-box}
-  html,body{height:100%;margin:0;background:
-    radial-gradient(1000px 500px at 10% 10%, rgba(123,120,255,0.06), transparent 3%),
-    radial-gradient(900px 400px at 90% 90%, rgba(51,226,154,0.04), transparent 3%),
-    var(--bg);
-    color:#e6eef6;font-family:'Poppins',system-ui,Roboto,Arial,sans-serif;
-    -webkit-font-smoothing:antialiased}
-  a{color:inherit;text-decoration:none}
-
-  /* header */
-  header.site-header{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;position:sticky;top:0;z-index:50;
-    background:linear-gradient(180deg,rgba(3,6,18,0.35),rgba(3,6,18,0.22));backdrop-filter:blur(6px);box-shadow:0 4px 12px rgba(0,0,0,0.45)}
-  .brand{display:flex;gap:12px;align-items:center}
-  .logo{width:54px;height:54px;border-radius:12px;background:linear-gradient(135deg,var(--accent1),var(--accent2));display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;color:#02111a;font-weight:800}
-  .brand-text h1{margin:0;font-size:16px;font-family:'Orbitron',sans-serif}
-  .brand-text p{margin:0;font-size:12px;color:var(--muted)}
-  nav.top-nav{display:flex;gap:10px;align-items:center}
-  nav.top-nav a{color:var(--muted);padding:8px 12px;border-radius:8px;font-weight:600}
-  nav.top-nav a:hover{color:#fff;background:rgba(255,255,255,0.02)}
-
-  /* container */
-  .container{max-width:1180px;margin:20px auto;padding:0 18px}
-
-  /* hero */
-  .hero{display:grid;grid-template-columns:1fr 420px;gap:20px;align-items:center;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:12px;padding:22px;box-shadow:var(--card-shadow);overflow:hidden}
-  .hero-left h2{font-family:'Orbitron',sans-serif;margin:0 0 10px;font-size:32px}
-  .hero-left p{margin:0 0 16px;color:var(--muted);line-height:1.45}
-  .cta-row{display:flex;gap:12px}
-  .btn{padding:10px 16px;border-radius:10px;border:0;cursor:pointer;font-weight:800;position:relative;overflow:hidden}
-  .btn-primary{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#02111a}
-  .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)}
-  .hero-right{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:16px;border-radius:10px;border:1px solid rgba(255,255,255,0.03)}
-
-  /* theme switch */
-  .theme-switch{display:flex;gap:6px;align-items:center}
-
-  /* blocks */
-  section.block{margin-top:18px;background:var(--panel);border-radius:10px;padding:16px;box-shadow:var(--card-shadow)}
-  .section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-  .small-muted{color:var(--muted);font-size:13px}
-
-  /* games grid */
-  .games-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
-  .game-tile{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.03));padding:12px;border-radius:8px;display:flex;flex-direction:column;gap:8px;transition:transform .24s,box-shadow .24s}
-  .game-tile:hover{transform:translateY(-8px);box-shadow:0 18px 40px rgba(2,6,20,0.6)}
-  .game-thumb{height:120px;border-radius:8px;background:#041225;display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--muted);font-size:14px}
-
-  /* play modal */
-  .modal{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:120;display:none}
-  .modal .sheet{width:90%;max-width:960px;background:#071026;border-radius:12px;padding:14px;border:1px solid rgba(255,255,255,0.03)}
-  .modal .sheet .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-
-  /* playground */
-  .playground{display:grid;grid-template-columns:1fr 420px;gap:12px}
-  textarea{width:100%;min-height:160px;background:transparent;border:1px solid rgba(255,255,255,0.04);padding:10px;border-radius:8px;color:inherit;font-family:monospace}
-  iframe.sandbox{width:100%;height:320px;border-radius:8px;border:0;background:#fff}
-
-  /* profiles */
-  .profiles{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-  .profile-chip{padding:8px 10px;border-radius:999px;background:rgba(255,255,255,0.02);cursor:pointer;border:1px solid rgba(255,255,255,0.02)}
-
-  /* footer */
-  footer.site-footer{margin-top:18px;padding:12px;border-radius:8px;background:linear-gradient(180deg,rgba(255,255,255,0.01),rgba(0,0,0,0.02));display:flex;justify-content:space-between;align-items:center;color:var(--muted)}
-
-  /* responsive */
-  @media (max-width:980px){
-    .hero{grid-template-columns:1fr}
-    .playground{grid-template-columns:1fr}
-    .hero-right{order:-1}
-  }
-  @media (max-width:620px){
-    .games-grid{grid-template-columns:repeat(1,1fr)}
-  }
-
-  /* themes */
-  body.theme-clean{--bg:#f6f8fb;--panel:#ffffff;--muted:#546172;color:#02111a}
-  body.theme-cyber{--bg:#050416;--panel:#0b0820;--muted:#97a0b6;--accent1:#ff4ecf;--accent2:#33e29a;color:#e6eef6}
-  body.theme-cartoon{--bg:#f7fbff;--panel:#fff8f0;--muted:#6b7280;--accent1:#ffb84d;--accent2:#6ad3ff;color:#1b2330}
-
-  /* neon glow helper */
-  .neon{ text-shadow: 0 0 18px rgba(123,120,255,0.18); }
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', sans-serif;
+        background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+        color: #eee;
+        overflow-x: hidden;
+    }
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 30px;
+        background: rgba(0,0,0,0.6);
+        backdrop-filter: blur(5px);
+    }
+    header h1 {
+        font-size: 28px;
+        color: #a4e667;
+        letter-spacing: 1px;
+    }
+    nav {
+        display: flex;
+        gap: 15px;
+    }
+    nav button {
+        padding: 8px 15px;
+        border: none;
+        background: #8b8be0;
+        color: #fff;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    nav button:hover {
+        background: #a4e667;
+    }
+    .hero {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 50px 20px;
+        background: rgba(255,255,255,0.05);
+        border-bottom: 1px solid #444;
+    }
+    .hero h2 {
+        font-size: 40px;
+        color: #fff;
+    }
+    .hero p {
+        font-size: 18px;
+        color: #ccc;
+        max-width: 800px;
+    }
+    .section {
+        padding: 20px 30px;
+    }
+    .section h3 {
+        font-size: 28px;
+        margin-bottom: 15px;
+        color: #a4e667;
+    }
+    .card-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 20px;
+    }
+    .card {
+        background: rgba(255,255,255,0.05);
+        padding: 15px;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        cursor: pointer;
+        transition: transform 0.2s ease, background 0.3s ease;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+        background: rgba(255,255,255,0.1);
+    }
+    .card img {
+        width: 100%;
+        border-radius: 8px;
+        margin-bottom: 10px;
+    }
+    iframe {
+        width: 100%;
+        height: 600px;
+        border: none;
+        background: #000;
+    }
+    #iframe-container {
+        display: none;
+        margin-top: 20px;
+    }
+    .code-editor {
+        background: rgba(0,0,0,0.7);
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 20px;
+    }
+    textarea {
+        width: 100%;
+        height: 200px;
+        background: #1a1a2e;
+        color: #eee;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        font-family: monospace;
+        resize: vertical;
+    }
+    .run-btn {
+        padding: 10px 20px;
+        background: #a4e667;
+        color: #000;
+        border: none;
+        margin-top: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    footer {
+        text-align: center;
+        padding: 10px;
+        background: rgba(0,0,0,0.6);
+        border-top: 1px solid #444;
+    }
 </style>
 </head>
-<body class="theme-cyber">
+<body>
 
-<header class="site-header">
-  <div class="brand">
-    <div class="logo">CA</div>
-    <div class="brand-text">
-      <h1>CiphAnon Arcade</h1>
-      <p class="small-muted">Play • Learn • Create</p>
-    </div>
-  </div>
-
-  <div style="display:flex;gap:12px;align-items:center">
-    <nav class="top-nav" aria-label="Main nav">
-      <a href="#games">Games</a>
-      <a href="#playground">Playground</a>
-      <a href="#features">Features</a>
-      <a href="#contact">Contact</a>
+<header>
+    <h1>CiphAnon Gaming Hub</h1>
+    <nav>
+        <button onclick="showSection('games')">Games</button>
+        <button onclick="showSection('unblockers')">Unblockers</button>
+        <button onclick="showSection('code')">Code Playground</button>
     </nav>
-
-    <div class="theme-switch" title="Switch theme" style="margin-left:10px">
-      <button class="btn btn-ghost" id="themeClean">Clean</button>
-      <button class="btn btn-ghost" id="themeCyber">Cyber</button>
-      <button class="btn btn-ghost" id="themeCartoon">Cartoon</button>
-    </div>
-  </div>
 </header>
 
-<main class="container">
+<section class="hero">
+    <h2>Play Games • Learn Coding • Explore</h2>
+    <p>Welcome to the ultimate school gaming hub. Play games, test unblockers, and code your own creations — all in one place!</p>
+</section>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-left">
-      <h2 class="neon">Play & Learn — CiphAnon Arcade</h2>
-      <p>Fast browser games, a sandboxed code playground, profiles & local saves, and an offline pack generator. Safe for quick play and learning — all runs in your browser.</p>
-
-      <div style="display:flex;gap:12px;align-items:center;margin-top:8px">
-        <button class="btn btn-primary" id="playNowTop">Play Now</button>
-        <button class="btn btn-ghost" id="openPlayground">Open Playground</button>
-        <div style="margin-left:12px">
-          <label class="small-muted">Profile</label>
-          <div style="display:flex;gap:8px;align-items:center;margin-top:6px">
-            <div id="profileList" class="profiles" aria-live="polite"></div>
-            <button class="btn btn-ghost" id="createProfile"><i class="fa-solid fa-plus"></i></button>
-          </div>
+<section id="games" class="section">
+    <h3>Games</h3>
+    <div class="card-container">
+        <div class="card" onclick="loadIframe('https://www.y8.com')">
+            <img src="https://via.placeholder.com/200x120?text=Game+1" alt="Game 1">
+            <h4>Play Y8 Games</h4>
         </div>
-      </div>
-
-      <div style="margin-top:12px;color:var(--muted);font-size:13px">Tip: Profiles keep progress local to your browser. Export a profile to move it to another device.</div>
-    </div>
-
-    <aside class="hero-right">
-      <div style="display:flex;flex-direction:column;gap:8px">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <div><strong>Featured</strong><div class="small-muted">PetClick — upgraded</div></div>
-          <div class="small-muted" id="heroClock"></div>
+        <div class="card" onclick="loadIframe('https://www.crazygames.com')">
+            <img src="https://via.placeholder.com/200x120?text=Game+2" alt="Game 2">
+            <h4>Play CrazyGames</h4>
         </div>
-
-        <div style="height:200px;border-radius:8px;overflow:hidden;background:
-          linear-gradient(160deg, rgba(123,120,255,0.06), rgba(51,226,154,0.04));display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:800">
-          Featured: PetClick — click & upgrade
+        <div class="card" onclick="loadIframe('https://www.miniclip.com')">
+            <img src="https://via.placeholder.com/200x120?text=Game+3" alt="Game 3">
+            <h4>Play Miniclip</h4>
         </div>
+    </div>
+</section>
 
-        <div style="display:flex;gap:8px;margin-top:8px">
-          <button class="btn btn-ghost" id="downloadPack">Download Offline Pack</button>
-          <button class="btn btn-ghost" id="importProfile">Import Profile</button>
-          <button class="btn btn-ghost" id="exportProfile">Export Profile</button>
+<section id="unblockers" class="section" style="display:none;">
+    <h3>Unblockers</h3>
+    <div class="card-container">
+        <div class="card" onclick="loadIframe('https://www.proxysite.com')">
+            <img src="https://via.placeholder.com/200x120?text=Proxy+Site" alt="Proxy">
+            <h4>ProxySite</h4>
         </div>
-      </div>
-    </aside>
-  </section>
-
-  <!-- GAMES -->
-  <section id="games" class="block">
-    <div class="section-header">
-      <h3 style="margin:0">Games</h3>
-      <div class="small-muted">Instant-play browser games (client-only)</div>
-    </div>
-
-    <div class="games-grid">
-      <!-- PetClick (full game) -->
-      <article class="game-tile" id="tile-petclick">
-        <div class="game-thumb">PetClick • Full</div>
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <div>
-            <div><strong>PetClick (Upgraded)</strong></div>
-            <div class="small-muted">Click to earn pets, buy upgrades & autosave</div>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">
-            <button class="play-btn" data-game="petclick">Play</button>
-            <button class="btn btn-ghost" id="openPetUI">Open UI</button>
-          </div>
+        <div class="card" onclick="loadIframe('https://www.hidemyass.com')">
+            <img src="https://via.placeholder.com/200x120?text=HMA" alt="HMA">
+            <h4>HideMyAss</h4>
         </div>
-      </article>
-
-      <!-- Quick RPS -->
-      <article class="game-tile">
-        <div class="game-thumb">Quick RPS</div>
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <div>
-            <div><strong>Quick RPS</strong></div>
-            <div class="small-muted">Best of 3</div>
-          </div>
-          <div><button class="play-btn" data-game="rps">Play</button></div>
+        <div class="card" onclick="loadIframe('https://www.kproxy.com')">
+            <img src="https://via.placeholder.com/200x120?text=KProxy" alt="KProxy">
+            <h4>KProxy</h4>
         </div>
-      </article>
-
-      <!-- Maze Runner -->
-      <article class="game-tile">
-        <div class="game-thumb">Maze Runner</div>
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <div>
-            <div><strong>Maze Runner</strong></div>
-            <div class="small-muted">Arrow keys to move</div>
-          </div>
-          <div><button class="play-btn" data-game="maze">Play</button></div>
-        </div>
-      </article>
     </div>
-  </section>
+</section>
 
-  <!-- PETCLICK UI SECTION (embed game UI directly so kids can play inline) -->
-  <section id="petclick-ui" class="block" style="margin-top:16px;display:none">
-    <div class="section-header">
-      <h3 style="margin:0">PetClick — Live</h3>
-      <div class="small-muted">Earn pets, buy upgrades, save to your profile</div>
+<section id="code" class="section" style="display:none;">
+    <h3>Code Playground</h3>
+    <div class="code-editor">
+        <textarea id="codeInput" placeholder="Type HTML/CSS/JS here..."></textarea>
+        <button class="run-btn" onclick="runCode()">Run Code</button>
     </div>
+    <iframe id="codeOutput"></iframe>
+</section>
 
-    <div style="display:flex;gap:14px;flex-wrap:wrap">
-      <div style="flex:1;min-width:300px">
-        <div style="background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);padding:12px;border-radius:8px">
-          <div style="display:flex;gap:10px;align-items:center">
-            <div style="font-size:22px;font-weight:800" id="pc-count">0</div>
-            <div class="small-muted">Pets</div>
-            <div style="flex:1"></div>
-            <div class="small-muted">Profile: <span id="pc-profile">—</span></div>
-          </div>
-
-          <div style="display:flex;gap:12px;margin-top:12px;align-items:center">
-            <button class="btn btn-primary" id="pc-click">PET!</button>
-            <button class="btn btn-ghost" id="pc-save">Save</button>
-            <button class="btn btn-ghost" id="pc-reset">Reset</button>
-          </div>
-
-          <div style="margin-top:12px">
-            <div style="display:flex;gap:10px;align-items:center">
-              <div style="font-weight:700">Upgrades</div>
-              <div class="small-muted">• Auto-click, Multiplier</div>
-            </div>
-
-            <div style="display:flex;gap:10px;margin-top:8px;flex-wrap:wrap">
-              <div style="background:rgba(255,255,255,0.02);padding:10px;border-radius:8px;min-width:160px">
-                <div style="font-weight:700">Auto Clicker</div>
-                <div class="small-muted">Cost: <span id="cost-auto">50</span></div>
-                <button class="btn btn-primary" id="buy-auto">Buy</button>
-              </div>
-
-              <div style="background:rgba(255,255,255,0.02);padding:10px;border-radius:8px;min-width:160px">
-                <div style="font-weight:700">Click ×2</div>
-                <div class="small-muted">Cost: <span id="cost-mul">120</span></div>
-                <button class="btn btn-primary" id="buy-mul">Buy</button>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      <div style="width:320px">
-        <div style="background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);padding:12px;border-radius:8px">
-          <div style="font-weight:800">Stats</div>
-          <div style="margin-top:8px;color:var(--muted)">
-            <div>Clicks: <span id="pc-clicks">0</span></div>
-            <div>Autos: <span id="pc-autos">0</span></div>
-            <div>Multiplier: ×<span id="pc-mul">1</span></div>
-            <div>High score: <span id="pc-high">0</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PLAYGROUND SECTION -->
-  <section id="playground" class="block">
-    <div class="section-header">
-      <h3 style="margin:0">Code Playground</h3>
-      <div class="small-muted">Sandboxed iframe — runs locally</div>
-    </div>
-
-    <div class="playground">
-      <div>
-        <label style="font-weight:700">HTML</label>
-        <textarea id="codeHtml">&lt;h1 style="color:orange"&gt;Hello&lt;/h1&gt;&lt;p&gt;Edit HTML, CSS, JS then Run&lt;/p&gt;</textarea>
-        <label style="font-weight:700">CSS</label>
-        <textarea id="codeCss">body{font-family:system-ui;background:#071022;color:#e6eef6;padding:18px}</textarea>
-        <label style="font-weight:700">JavaScript</label>
-        <textarea id="codeJs">console.log('Sandbox ready')</textarea>
-
-        <div style="display:flex;gap:8px;margin-top:8px">
-          <button class="btn btn-primary" id="runCode">Run</button>
-          <button class="btn btn-ghost" id="resetCode">Reset</button>
-          <button class="btn btn-ghost" id="downloadCode">Download</button>
-        </div>
-      </div>
-
-      <div class="iframe-wrap" style="min-width:320px">
-        <iframe id="sandbox" class="sandbox" sandbox="allow-scripts allow-same-origin"></iframe>
-      </div>
-    </div>
-  </section>
-
-  <!-- FEATURES & TOOLS -->
-  <section id="features" class="block">
-    <div class="section-header">
-      <h3 style="margin:0">Features & Tools</h3>
-      <div class="small-muted">What makes this build useful</div>
-    </div>
-
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
-      <div style="background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);padding:12px;border-radius:8px">
-        <strong>Safe Local Saves</strong>
-        <div class="small-muted" style="margin-top:6px">Profiles store progress in your browser only. Export/import to move saves.</div>
-      </div>
-
-      <div style="background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);padding:12px;border-radius:8px">
-        <strong>Offline Pack Generator</strong>
-        <div class="small-muted" style="margin-top:6px">Create a single HTML file containing the PetClick game for offline play or distribution.</div>
-      </div>
-
-      <div style="background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);padding:12px;border-radius:8px">
-        <strong>Kid-friendly UI</strong>
-        <div class="small-muted" style="margin-top:6px">Large buttons, clear labels, safe sandboxing.</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section id="contact" class="block">
-    <div class="section-header">
-      <h3 style="margin:0">Contact</h3>
-      <div class="small-muted">Demo contact - no real server</div>
-    </div>
-    <div style="display:flex;gap:12px;flex-wrap:wrap">
-      <div style="flex:1;min-width:220px">
-        <p class="small-muted">Email: <strong>hello@ciphanon.example</strong></p>
-        <p class="small-muted">Safety: No unblockers or proxy tools are included.</p>
-      </div>
-      <div style="width:320px">
-        <form id="contactForm" style="display:flex;flex-direction:column;gap:8px">
-          <input placeholder="Your name" required style="padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit">
-          <input placeholder="Email" type="email" required style="padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit">
-          <textarea placeholder="Message" style="padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit"></textarea>
-          <div style="display:flex;gap:8px"><button class="btn btn-primary" type="submit">Send</button><button class="btn btn-ghost" type="reset">Reset</button></div>
-          <div id="contactResult" class="small-muted" style="margin-top:6px"></div>
-        </form>
-      </div>
-    </div>
-  </section>
-
-  <footer class="site-footer">
-    <div>© CiphAnon Arcade — <span id="yr"></span></div>
-    <div class="small-muted" id="footerTime">Local</div>
-  </footer>
-</main>
-
-<!-- Modal for runtime games -->
-<div class="modal" id="modal">
-  <div class="sheet" role="dialog" aria-modal="true">
-    <div class="top">
-      <div id="modalTitle" style="font-weight:800"></div>
-      <div><button class="btn btn-ghost" id="closeModal">Close</button></div>
-    </div>
-    <div id="modalBody"></div>
-  </div>
+<div id="iframe-container" class="section">
+    <iframe id="iframe"></iframe>
 </div>
 
+<footer>
+    CiphAnon Studios © 2025 — Gaming hub for school fun & learning.
+</footer>
+
 <script>
-/* ---------------------------- Utilities ---------------------------- */
-function $(s){return document.querySelector(s)}
-function $a(s){return Array.from(document.querySelectorAll(s))}
-
-/* Clock & year */
-function tick(){const now=new Date();$('#footerTime').textContent = now.toLocaleString();$('#heroClock').textContent = now.toLocaleTimeString();$('#yr').textContent = now.getFullYear();}
-setInterval(tick,1000); tick();
-
-/* Theme switching */
-$('#themeClean').addEventListener('click', ()=>{ document.body.className='theme-clean' });
-$('#themeCyber').addEventListener('click', ()=>{ document.body.className='theme-cyber' });
-$('#themeCartoon').addEventListener('click', ()=>{ document.body.className='theme-cartoon' });
-
-/* quick navigation */
-$('#playNowTop').addEventListener('click', ()=>{ location.hash='#games'; document.querySelector('#games').scrollIntoView({behavior:'smooth'}); });
-$('#openPlayground').addEventListener('click', ()=>{ location.hash='#playground'; document.querySelector('#playground').scrollIntoView({behavior:'smooth'}); });
-
-/* tiny alert helper */
-function showModal(title, html){
-  $('#modalTitle').textContent = title;
-  $('#modalBody').innerHTML = html;
-  $('#modal').style.display = 'flex';
-  $('#closeModal').focus();
-}
-$('#closeModal').addEventListener('click', ()=> $('#modal').style.display='none');
-
-/* ---------------------------- Profiles & Storage ---------------------------- */
-const STORAGE_KEY = 'ciphanon_profiles_v1';
-
-function readProfiles(){ try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}') } catch(e){ return {} } }
-function writeProfiles(obj){ localStorage.setItem(STORAGE_KEY, JSON.stringify(obj)) }
-
-function renderProfileList(){
-  const profiles = readProfiles();
-  const list = $('#profileList'); list.innerHTML='';
-  Object.keys(profiles).forEach(name=>{
-    const b = document.createElement('button'); b.className='profile-chip'; b.textContent=name;
-    b.addEventListener('click', ()=> selectProfile(name));
-    list.appendChild(b);
-  });
-  // add default if none
-  if(Object.keys(profiles).length===0){
-    createProfile('Guest');
-  }
-}
-function createProfile(defaultName){
-  const name = defaultName || prompt('Profile name') || ('Player'+Math.floor(Math.random()*999));
-  const profiles = readProfiles();
-  if(profiles[name]) { alert('Profile exists. Choose another name.'); return; }
-  profiles[name] = { pets:0, clicks:0, autos:0, mul:1, high:0, upgrades:{auto:0,mul:0} };
-  writeProfiles(profiles);
-  renderProfileList();
-  selectProfile(name);
-}
-$('#createProfile').addEventListener('click', ()=> createProfile() );
-
-let CURRENT_PROFILE = null;
-function selectProfile(name){
-  const profiles = readProfiles();
-  if(!profiles[name]) return;
-  CURRENT_PROFILE = name;
-  // update UI
-  $a('.profile-chip').forEach(b=>b.style.outline='none');
-  $a('.profile-chip').forEach(b => { if(b.textContent===name) b.style.outline='2px solid rgba(255,255,255,0.06)' });
-  $('#pc-profile') && ( $('#pc-profile').textContent = name );
-  // load petclick values if UI exists
-  loadPetClickToUI();
+function showSection(section) {
+    document.getElementById('games').style.display = 'none';
+    document.getElementById('unblockers').style.display = 'none';
+    document.getElementById('code').style.display = 'none';
+    document.getElementById('iframe-container').style.display = 'none';
+    document.getElementById(section).style.display = 'block';
 }
 
-/* export/import profile */
-$('#exportProfile').addEventListener('click', ()=>{
-  if(!CURRENT_PROFILE){ alert('Select a profile first'); return; }
-  const profiles = readProfiles();
-  const data = profiles[CURRENT_PROFILE];
-  const blob = new Blob([JSON.stringify({name:CURRENT_PROFILE,data},null,2)],{type:'application/json'});
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = CURRENT_PROFILE + '.ciphanon-profile.json'; document.body.appendChild(a); a.click(); a.remove();
-});
-
-$('#importProfile').addEventListener('click', ()=>{
-  const inp = document.createElement('input'); inp.type='file'; inp.accept='.json';
-  inp.onchange = (e) => {
-    const f = e.target.files[0]; if(!f) return;
-    const r = new FileReader();
-    r.onload = () => {
-      try {
-        const obj = JSON.parse(r.result);
-        const name = obj.name || prompt('Profile name to import as') || ('Imported'+Math.floor(Math.random()*999));
-        const profiles = readProfiles();
-        profiles[name] = obj.data || {};
-        writeProfiles(profiles); renderProfileList(); selectProfile(name);
-        alert('Imported profile: '+name);
-      } catch(err){ alert('Invalid file') }
-    };
-    r.readAsText(f);
-  };
-  inp.click();
-});
-
-/* render initially */
-renderProfileList();
-
-/* ---------------------------- PETCLICK — Full Game Logic ---------------------------- */
-let pc = {
-  pets:0, clicks:0, autos:0, mul:1, high:0, upgrades:{auto:0,mul:0}
-};
-
-function savePetClick(){
-  if(!CURRENT_PROFILE) return alert('Select or create a profile first.');
-  const profiles = readProfiles();
-  profiles[CURRENT_PROFILE] = pc;
-  writeProfiles(profiles);
-  updatePetUI();
-}
-function loadPetClickToUI(){
-  if(!CURRENT_PROFILE) return;
-  const profiles = readProfiles();
-  const p = profiles[CURRENT_PROFILE] || { pets:0, clicks:0, autos:0, mul:1, high:0, upgrades:{auto:0,mul:0} };
-  pc = Object.assign({}, p);
-  updatePetUI();
-}
-function updatePetUI(){
-  $('#pc-count') && ($('#pc-count').textContent = pc.pets);
-  $('#pc-clicks') && ($('#pc-clicks').textContent = pc.clicks);
-  $('#pc-autos') && ($('#pc-autos').textContent = pc.autos);
-  $('#pc-mul') && ($('#pc-mul').textContent = pc.mul);
-  $('#pc-high') && ($('#pc-high').textContent = pc.high);
-  $('#cost-auto') && ($('#cost-auto').textContent = 50 * Math.pow(1.6, pc.upgrades.auto || 0) | 0);
-  $('#cost-mul') && ($('#cost-mul').textContent = 120 * Math.pow(1.8, pc.upgrades.mul || 0) | 0);
-  $('#pc-profile') && ($('#pc-profile').textContent = CURRENT_PROFILE || '—');
+function loadIframe(url) {
+    document.getElementById('iframe').src = url;
+    document.getElementById('iframe-container').style.display = 'block';
+    document.getElementById('games').style.display = 'none';
+    document.getElementById('unblockers').style.display = 'none';
+    document.getElementById('code').style.display = 'none';
 }
 
-/* click action */
-function petClick(){
-  const base = (pc.mul || 1);
-  pc.pets += base;
-  pc.clicks++;
-  if(pc.pets > pc.high) pc.high = pc.pets;
-  updatePetUI();
-  playClickTone();
+function runCode() {
+    const code = document.getElementById('codeInput').value;
+    const iframe = document.getElementById('codeOutput');
+    iframe.srcdoc = code;
 }
-
-/* buy upgrades */
-$('#buy-auto').addEventListener('click', ()=>{
-  const cost = Number($('#cost-auto').textContent);
-  if(pc.pets >= cost){
-    pc.pets -= cost;
-    pc.upgrades.auto = (pc.upgrades.auto || 0) + 1;
-    pc.autos++;
-    // increase autos effect: spawn auto every 2s per auto, but avoid stacking timers; manage below
-    updatePetUI();
-    savePetClick();
-  } else alert('Not enough pets');
-});
-
-$('#buy-mul').addEventListener('click', ()=>{
-  const cost = Number($('#cost-mul').textContent);
-  if(pc.pets >= cost){
-    pc.pets -= cost;
-    pc.upgrades.mul = (pc.upgrades.mul || 0) + 1;
-    pc.mul = pc.mul * 2;
-    updatePetUI();
-    savePetClick();
-  } else alert('Not enough pets');
-});
-
-/* auto clicker loop (every second) */
-setInterval(()=>{
-  if(pc.autos > 0){
-    // each auto grants a small number per interval
-    const gained = pc.autos * (pc.mul || 1);
-    pc.pets += gained;
-    if(pc.pets > pc.high) pc.high = pc.pets;
-    updatePetUI();
-  }
-}, 1500);
-
-/* PC Save / Reset / UI open */
-$('#pc-save') && $('#pc-save').addEventListener('click', ()=> savePetClick());
-$('#pc-reset') && $('#pc-reset').addEventListener('click', ()=>{
-  if(!confirm('Reset pet progress for this profile?')) return;
-  pc = {pets:0, clicks:0, autos:0, mul:1, high:0, upgrades:{auto:0,mul:0}};
-  savePetClick(); updatePetUI();
-});
-
-/* open inline UI toggle */
-$('#openPetUI').addEventListener('click', ()=>{
-  const sec = $('#petclick-ui');
-  sec.style.display = (sec.style.display === 'none' || sec.style.display === '') ? 'block' : 'none';
-  if(sec.style.display==='block') loadPetClickToUI();
-});
-
-/* inline play button */
-$('#pc-click') && $('#pc-click').addEventListener('click', ()=> { petClick(); savePetClick(); });
-
-/* wire Play buttons that open popup games (client-side) */
-$a('.play-btn').forEach(btn => btn.addEventListener('click', (e)=>{
-  const g = e.currentTarget.dataset.game;
-  if(g==='petclick'){ openPetPopup(); }
-  else if(g==='rps'){ openGamePopup('Quick RPS', rpsHTML(),600,300); }
-  else if(g==='maze'){ openGamePopup('Maze Runner', mazeHTML(),620,420); }
-}));
-
-/* open modal/popup logic */
-function openGamePopup(title, htmlContent, w=720, h=520){
-  // open as new window with blob to avoid network; we will use modal for demo small screens
-  const full = `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${title}</title>
-    <style>body{margin:0;background:#071022;color:#e6eef6;font-family:system-ui;display:flex;flex-direction:column;height:100vh}
-    .top{padding:8px;background:linear-gradient(90deg,rgba(255,255,255,0.02),transparent);display:flex;justify-content:space-between;align-items:center}
-    .center{flex:1;display:flex;align-items:center;justify-content:center;padding:18px}
-    button{background:transparent;border:0;color:#97a0b6;cursor:pointer}
-    </style></head><body>
-    <div class="top"><strong>${title}</strong><button onclick="window.close()">Close</button></div>
-    <div class="center">${htmlContent}</div>
-    </body></html>`;
-  const blob = new Blob([full], {type:'text/html'});
-  const url = URL.createObjectURL(blob);
-  window.open(url, '_blank', `width=${w},height=${h},resizable=yes`);
-}
-
-function openPetPopup(){
-  // lightweight popup that includes a playable scaled version of the PetClick core
-  const html = petClickPopupHTML();
-  openGamePopup('PetClick — Pocket', html, 540, 480);
-}
-
-/* PetClick popup HTML generator */
-function petClickPopupHTML(){
-  return `
-    <div style="text-align:center">
-      <div id="score" style="font-size:28px;margin-bottom:10px">0</div>
-      <button id="bigBtn" style="padding:18px 28px;border-radius:10px;background:linear-gradient(90deg,#7b78ff,#33e29a);border:0;color:#02111a;font-weight:800;font-size:18px">PET!</button>
-      <div style="margin-top:10px;color:#9fb2c9;font-size:13px">Click to collect pets. This pocket version doesn't save to your main profile.</div>
-      <script>
-        (function(){
-          let s=0;
-          const sc=document.getElementById('score');
-          const btn=document.getElementById('bigBtn');
-          btn.onclick = ()=> { s++; sc.textContent = s; if(s%10===0){ alert('You reached '+s+' pets! (demo)') } };
-        })();
-      <\/script>
-    </div>
-  `;
-}
-
-/* ---------------------------- Small demo games (RPS, Maze) ---------------------------- */
-function rpsHTML(){
-  return `
-    <div style="text-align:center">
-      <div id="res" style="font-size:20px;margin-bottom:8px">Choose</div>
-      <div style="display:flex;gap:8px;justify-content:center">
-        <button onclick="play('rock')">✊ Rock</button>
-        <button onclick="play('paper')">✋ Paper</button>
-        <button onclick="play('scissors')">✌️ Scissors</button>
-      </div>
-      <script>
-        function play(p){
-          const opts=['rock','paper','scissors']; const c = opts[Math.floor(Math.random()*3)];
-          let out = 'Tie';
-          if(p===c) out='Tie';
-          else if((p==='rock'&&c==='scissors')||(p==='paper'&&c==='rock')||(p==='scissors'&&c==='paper')) out='You win!';
-          else out='You lose :(';
-          document.getElementById('res').textContent = 'You: '+p+' — CPU: '+c+' → '+out;
-        }
-      <\/script>
-    </div>
-  `;
-}
-
-function mazeHTML(){
-  return `
-    <div style="text-align:center">
-      <canvas id="m" width="320" height="240" style="background:#03102a;border-radius:8px"></canvas>
-      <div style="margin-top:8px;color:#9fb2c9">Use arrow keys to reach the green tile</div>
-      <script>
-        (function(){
-          const c=document.getElementById('m'), ctx=c.getContext('2d');
-          const size=16, cols=20, rows=15; let px=1,py=1; const goal={x:18,y:13};
-          function draw(){
-            ctx.clearRect(0,0,c.width,c.height);
-            for(let y=0;y<rows;y++){
-              for(let x=0;x<cols;x++){
-                ctx.fillStyle = (x===goal.x && y===goal.y)?'#2ee48f':'#061427';
-                ctx.fillRect(x*size,y*size,size-2,size-2);
-              }
-            }
-            ctx.fillStyle='#7b78ff'; ctx.fillRect(px*size,py*size,size-2,size-2);
-          }
-          draw();
-          window.addEventListener('keydown',e=>{
-            if(e.key.includes('Arrow')) {
-              if(e.key==='ArrowUp') py = Math.max(0,py-1);
-              if(e.key==='ArrowDown') py = Math.min(rows-1,py+1);
-              if(e.key==='ArrowLeft') px = Math.max(0,px-1);
-              if(e.key==='ArrowRight') px = Math.min(cols-1,px+1);
-              draw();
-              if(px===goal.x && py===goal.y) setTimeout(()=>alert('You win!'),60);
-            }
-          });
-        })();
-      <\/script>
-    </div>
-  `;
-}
-
-/* ---------------------------- Inline petclick UI helpers ---------------------------- */
-/* clicks */
-$('#pc-click') && $('#pc-click').addEventListener('click', ()=> { petClick(); savePetClick(); });
-
-/* quick sounds (tiny) */
-function playClickTone(){
-  try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const o = ctx.createOscillator(); const g = ctx.createGain();
-    o.type='sine'; o.frequency.value = 600; g.gain.value = 0.02;
-    o.connect(g); g.connect(ctx.destination); o.start(); setTimeout(()=>{ o.stop(); ctx.close(); }, 90);
-  } catch(e){}
-}
-
-/* autosave on interval if profile selected */
-setInterval(()=>{ if(CURRENT_PROFILE) savePetClick() }, 10000);
-
-/* ---------------------------- Playground sandbox ---------------------------- */
-function runSandbox(){
-  const html = $('#codeHtml').value || '<h1>Hello</h1>';
-  const css = '<style>'+($('#codeCss').value || '')+'</style>';
-  const js = '<script>'+($('#codeJs').value || '')+'<\/script>';
-  const src = '<!doctype html><html><head><meta charset="utf-8">'+css+'</head><body>'+html+js+'</body></html>';
-  const iframe = $('#sandbox');
-  try { iframe.srcdoc = src; } catch(e){ iframe.src = URL.createObjectURL(new Blob([src],{type:'text/html'})); }
-}
-$('#runCode').addEventListener('click', runSandbox);
-$('#resetCode').addEventListener('click', ()=>{
-  $('#codeHtml').value = '<h1>Hello from sandbox</h1><p>Edit HTML/CSS/JS and Run</p>';
-  $('#codeCss').value = 'body{font-family:system-ui;background:#071022;color:#e6eef6;padding:18px}';
-  $('#codeJs').value = 'console.log(\"Sandbox ready\")';
-  runSandbox();
-});
-$('#resetCode').click();
-
-$('#downloadCode').addEventListener('click', ()=>{
-  const html = $('#codeHtml').value||''; const css = $('#codeCss').value||''; const js = $('#codeJs').value||'';
-  const full = '<!doctype html><html><head><meta charset=\"utf-8\"><style>'+css+'</style></head><body>'+html+'<script>'+js+'<\/script></body></html>';
-  const blob = new Blob([full], {type:'text/html'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='playground.html'; document.body.appendChild(a); a.click(); a.remove();
-});
-
-/* ---------------------------- Contact form demo ---------------------------- */
-$('#contactForm').addEventListener('submit', (e)=>{ e.preventDefault(); $('#contactResult').textContent = 'Thanks — demo message queued.'; e.target.reset(); });
-
-/* ---------------------------- Offline pack generator ---------------------------- */
-$('#downloadPack').addEventListener('click', ()=>{
-  // Build a single-file HTML containing the PetClick popup code so it can be distributed offline.
-  const html = offlinePackHTML();
-  const blob = new Blob([html], {type:'text/html'});
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'ciphanon-offline-petclick.html'; document.body.appendChild(a); a.click(); a.remove();
-  alert('Offline pack generated: single HTML file (PetClick) downloaded.');
-});
-
-function offlinePackHTML(){
-  // this contains the basic PetClick pocket version (no saves) and instructions
-  const content = petClickPopupHTML();
-  return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CiphAnon Offline — PetClick</title>
-    <style>body{margin:0;background:#071022;color:#e6eef6;font-family:system-ui;display:flex;flex-direction:column;height:100vh}
-    .wrap{padding:18px} button{padding:10px 14px;border-radius:9px;border:0;background:linear-gradient(90deg,#7b78ff,#33e29a);color:#02111a;font-weight:800}
-    .note{margin-top:12px;color:#9fb2c9;font-size:13px}
-    </style></head><body><div class="wrap"><h1>PetClick — Offline</h1>${content}<div class="note">This single file runs fully offline in your browser. Use responsibly.</div></div></body></html>`;
-}
-
-/* ---------------------------- Init: create default profile if none, select first ---------------------------- */
-(function initProfiles(){
-  const p = readProfiles();
-  if(Object.keys(p).length===0) {
-    createProfile('Player1');
-  } else {
-    const first = Object.keys(p)[0];
-    selectProfile(first);
-  }
-})();
-
-/* ---------------------------- Small accessibility improvements ---------------------------- */
-/* allow enter to create profile when focused on create button */
-$('#createProfile').addEventListener('keydown', (e)=>{ if(e.key==='Enter') createProfile(); });
-
-/* ---------------------------- Final notes in console ---------------------------- */
-console.log('CiphAnon Arcade — local demo build loaded. Profiles saved locally. No unblockers included.');
 </script>
 
 </body>
